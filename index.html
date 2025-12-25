@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WC 2026 Sim - Split Bracket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <style>
+        /* Custom scrollbar for better look */
+        ::-webkit-scrollbar { height: 12px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen font-sans pb-24">
+
+    <div class="bg-blue-900 text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
+        <h1 class="text-xl font-bold">World Cup 2026 Simulator</h1>
+        <span id="phase-indicator" class="text-xs bg-blue-800 px-2 py-1 rounded text-blue-200">Group Stage</span>
+    </div>
+
+    <div id="app" class="p-4 w-full mx-auto">
+        
+        <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+            </div>
+
+        <div id="third-place-container" class="hidden max-w-4xl mx-auto">
+            <button onclick="goBack()" class="mb-4 text-sm flex items-center text-gray-500 hover:text-blue-600 font-bold">
+                &larr; Return to Groups
+            </button>
+
+            <h2 class="text-2xl font-bold mb-4 text-center">Rank the 3rd Place Teams</h2>
+            <p class="text-center text-gray-600 mb-4 text-sm">Drag to order. Top 8 Advance.</p>
+            <ul id="third-place-list" class="bg-white rounded shadow divide-y">
+                </ul>
+            
+            <div class="fixed bottom-4 left-0 w-full p-4 flex justify-center gap-4 bg-white/90 backdrop-blur z-40">
+                <button onclick="goBack()" class="bg-gray-500 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition">
+                    Back
+                </button>
+                <button onclick="startKnockouts()" class="bg-blue-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition">
+                    Generate Bracket
+                </button>
+            </div>
+        </div>
+
+        <div id="bracket-container" class="hidden h-[calc(100vh-80px)] flex flex-col">
+            
+            <div class="p-2 bg-white shadow-sm flex justify-between items-center sticky left-0 z-40">
+                <button onclick="goBack()" class="text-sm flex items-center text-gray-500 hover:text-blue-600 font-bold">
+                    &larr; Back
+                </button>
+                <h2 class="text-xl font-bold text-blue-900">Knockout Stage</h2>
+                <div class="w-16"></div> 
+            </div>
+
+        <div class="flex-1 overflow-auto bg-slate-50 p-8">
+            <div class="flex justify-center min-w-[1800px] relative">
+                
+                <svg id="bracket-lines" class="absolute inset-0 w-full h-full pointer-events-none z-0" style="overflow: visible;"></svg>
+
+                <div id="bracket-left" class="flex gap-8 z-10"></div>
+
+                <div id="bracket-final" class="flex flex-col z-10"></div>
+
+                <div id="bracket-right" class="flex gap-8 flex-row-reverse z-10"></div>
+            
+            </div>
+        </div>
+
+            <div id="champion-display" class="hidden fixed inset-0 bg-blue-900/95 z-50 flex items-center justify-center flex-col text-white">
+                <h1 class="text-6xl font-bold mb-4 text-yellow-400">WORLD CHAMPION</h1>
+                <div id="champion-name" class="text-8xl font-black uppercase tracking-wider mb-8 drop-shadow-lg">USA</div>
+                <button onclick="closeChampion()" class="bg-white text-blue-900 px-8 py-3 rounded-full font-bold hover:scale-105 transition shadow-xl">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="phase1-controls" class="fixed bottom-4 left-0 w-full p-4 flex justify-center pointer-events-none z-40">
+        <button onclick="goToThirdPlacePhase()" class="pointer-events-auto bg-green-600 text-white px-8 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition">
+            Finish Group Stage
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
