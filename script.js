@@ -193,7 +193,10 @@ function updateVisuals(list) {
 
 function goToThirdPlacePhase() {
     document.querySelectorAll('#groups-container ul').forEach(list => {
-        finalGroupStandings[list.dataset.group] = Array.from(list.children).map(li => li.innerText);
+        finalGroupStandings[list.dataset.group] = Array.from(list.children).map(li => {
+            // FIX: Select the specific span containing the name to avoid grabbing images/extra text
+            return li.querySelector('span').textContent.trim(); 
+        });
     });
 
     const thirdList = document.getElementById('third-place-list');
@@ -377,48 +380,35 @@ function createMatchCard(match) {
     div.className = 'bg-white border-2 border-gray-300 rounded-lg shadow-sm flex flex-col relative overflow-hidden transition-all z-20 w-full'; 
     
     if (match.home !== 'TBD' && match.away !== 'TBD' && !match.winner) {
-        div.classList.remove('border-gray-300');
         div.classList.add('border-blue-400', 'shadow-md');
     }
 
-    // --- HOME BUTTON ---
+    // FIFA CODE LOOKUP: Use the 3-letter code for the display name
+    const homeDisplayName = fifaCountryCodes[match.home] || match.home;
+    const awayDisplayName = fifaCountryCodes[match.away] || match.away;
+
     const homeBtn = document.createElement('button');
-    // We keep 'flex' and 'gap-2' here to separate FLAG from TEXT
     homeBtn.className = `p-3 text-left font-bold border-b border-gray-200 text-sm transition-colors flex items-center ${getBtnColor(match, match.home)}`;
-    
-    const homeNameDisplay = fifaCountryCodes[match.home] || match.home;
-    const homeSeed = teamOriginMap[match.home] ? `<span class="text-xs font-normal opacity-70">(${teamOriginMap[match.home]})</span>` : '';
-    
-    // FIX: We wrap the Name and Seed in a <div> so they stay attached
-    // The 'truncate' class goes on this wrapper to handle long names correctly
     homeBtn.innerHTML = `
         ${getFlagHtml(match.home)} 
         <div class="truncate">
-            <span>${homeNameDisplay}</span> ${homeSeed}
+            <span>${homeDisplayName}</span> 
+            ${teamOriginMap[match.home] ? `<span class="text-xs font-normal opacity-70">(${teamOriginMap[match.home]})</span>` : ''}
         </div>`; 
-    
     homeBtn.onclick = () => onMatchClick(match.id, 'home');
     
-
-    // --- AWAY BUTTON ---
     const awayBtn = document.createElement('button');
     awayBtn.className = `p-3 text-left font-bold text-sm transition-colors flex items-center ${getBtnColor(match, match.away)}`;
-    
-    const awayNameDisplay = fifaCountryCodes[match.away] || match.away;
-    const awaySeed = teamOriginMap[match.away] ? `<span class="text-xs font-normal opacity-70">(${teamOriginMap[match.away]})</span>` : '';
-    
-    // FIX: Wrapper div here too
     awayBtn.innerHTML = `
         ${getFlagHtml(match.away)} 
         <div class="truncate">
-            <span>${awayNameDisplay}</span> ${awaySeed}
+            <span>${awayDisplayName}</span> 
+            ${teamOriginMap[match.away] ? `<span class="text-xs font-normal opacity-70">(${teamOriginMap[match.away]})</span>` : ''}
         </div>`;
-    
     awayBtn.onclick = () => onMatchClick(match.id, 'away');
 
     div.appendChild(homeBtn);
     div.appendChild(awayBtn);
-    
     return div;
 }
 
