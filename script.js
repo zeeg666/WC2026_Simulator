@@ -101,8 +101,8 @@ let teamOriginMap = {};
 const groupsData = {
   A: ['Mexico', 'South Africa', 'South Korea', 'PLD'],
   B: ['Canada', 'PLA', 'Qatar', 'Switzerland'],
-  C: ['USA', 'Morocco', 'Haiti', 'Scotland'],
-  D: ['Brazil', 'Paraguay', 'Australia', 'PLC'],
+  C: ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
+  D: ['United States', 'Paraguay', 'Australia', 'PLC'],
   E: ['Germany', 'Curacao', 'Ivory Coast', 'Ecuador'],
   F: ['Netherlands', 'Japan', 'PLB', 'Tunisia'],
   G: ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
