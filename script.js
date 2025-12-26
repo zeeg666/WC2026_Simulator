@@ -46,6 +46,7 @@ const fifaCountryCodes = {
   "Croatia": "CRO",
   "Ghana": "GHA",
   "Panama": "PAN",
+  "Denmark": "DEN"
   // Add any missing ones...
 };
 
@@ -55,6 +56,7 @@ const teamCodes = {
     "USA": "us", "Canada": "ca", "Mexico": "mx",
     "Costa Rica": "cr", "Panama": "pa", "Jamaica": "jm", 
     "Honduras": "hn", "El Salvador": "sv",
+    "Haiti": "ht",
 
     // --- CONMEBOL (South America) ---
     "Argentina": "ar", "Brazil": "br", "Uruguay": "uy",
@@ -76,15 +78,19 @@ const teamCodes = {
     "Egypt": "eg", "Tunisia": "tn", "Algeria": "dz",
     "Cameroon": "cm", "Ghana": "gh", "Ivory Coast": "ci",
     "Mali": "ml", "Burkina Faso": "bf",
+    "Cape Verde": "cv",
+    "South Africa": "za",
 
     // --- AFC (Asia) ---
     "Japan": "jp", "South Korea": "kr", "Iran": "ir",
     "Australia": "au", "Saudi Arabia": "sa", "Qatar": "qa",
     "Iraq": "iq", "UAE": "ae", "Uzbekistan": "uz",
     "China": "cn",
+    "Jordan": "jo",
 
     // --- OFC (Oceania) ---
     "New Zealand": "nz", "Fiji": "fj",
+    "Curacao": "cw",
 
     // --- Fallbacks / Generic ---
     "TBD": "un", // United Nations flag for unknown
@@ -566,20 +572,38 @@ function getTeam(groupLetter, groupResults) {
 }
 
 function showScreen(screenName) {
+    // 1. Select all the phase elements
     const p1 = document.getElementById('groups-container');
     const p1Btn = document.getElementById('phase1-controls');
+    const p1Instr = document.getElementById('phase1-instructions'); // <--- NEW SELECTION
+    
     const p2 = document.getElementById('third-place-container');
     const p3 = document.getElementById('bracket-container');
 
-    p1.classList.add('hidden'); p1Btn.classList.add('hidden');
-    p2.classList.add('hidden'); p3.classList.add('hidden');
+    // 2. Hide EVERYTHING first
+    p1.classList.add('hidden'); 
+    p1Btn.classList.add('hidden');
+    p1Instr.classList.add('hidden'); // <--- NEW HIDE
+    p2.classList.add('hidden'); 
+    p3.classList.add('hidden');
 
+    // 3. Update the top indicator text (Optional polish)
+    const indicator = document.getElementById('phase-indicator');
+
+    // 4. Show only the active screen
     if (screenName === 'groups') {
-        p1.classList.remove('hidden'); p1Btn.classList.remove('hidden');
+        p1.classList.remove('hidden'); 
+        p1Btn.classList.remove('hidden');
+        p1Instr.classList.remove('hidden'); // <--- NEW SHOW
+        if(indicator) indicator.innerText = "Group Stage";
+        
     } else if (screenName === 'third-place') {
         p2.classList.remove('hidden');
+        if(indicator) indicator.innerText = "Ranking 3rd Place";
+
     } else if (screenName === 'bracket') {
         p3.classList.remove('hidden');
+        if(indicator) indicator.innerText = "Knockout Bracket";
     }
 }
 

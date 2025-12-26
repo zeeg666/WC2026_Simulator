@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta property="og:title" content="World Cup 2026 Simulator - Predict the Winner">
+    <meta property="og:description" content="My interactive simulator for the new 48-team World Cup format. Drag groups, rank 3rd place teams, and play out the full bracket.">
+    <meta property="og:image" content="https://your-website.com/preview-image.png"> <meta property="og:url" content="https://your-website.com">
+    <meta name="twitter:card" content="summary_large_image">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Simulate the 2026 World Cup group stage and knockout bracket. Interactive drag-and-drop table, third-place ranking, and split bracket generator for all 48 teams.">
     <title>WC 2026 Sim - Split Bracket</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
@@ -17,11 +21,20 @@
 <body class="bg-slate-100 min-h-screen font-sans pb-24">
 
     <div class="bg-blue-900 text-white p-4 sticky top-0 z-50 shadow-md flex justify-between items-center">
-        <h1 class="text-xl font-bold">World Cup 2026 Simulator</h1>
+        <h1 class="text-xl font-bold">World Cup 2026 Simulator - Drag and Predict</h1>
         <span id="phase-indicator" class="text-xs bg-blue-800 px-2 py-1 rounded text-blue-200">Group Stage</span>
     </div>
 
     <div id="app" class="p-4 w-full mx-auto">
+
+        <div id="phase1-instructions" class="text-center mb-6 bg-blue-50 border-l-4 border-blue-600 text-blue-900 p-4 rounded shadow-sm max-w-4xl mx-auto">
+            <p class="font-bold text-lg">Group Stage Simulation</p>
+            <p class="text-sm md:text-base mt-1">
+                Drag and drop teams to reorder the standings. 
+                The <span class="font-bold text-green-600">Top 2</span> advance automatically. 
+                <span class="font-bold text-yellow-600">3rd place</span> teams <em>might</em> advance based on how you rank them in the next step.
+            </p>
+        </div>
         
         <div id="groups-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
             </div>
@@ -53,8 +66,11 @@
                     &larr; Back
                 </button>
                 <h2 class="text-xl font-bold text-blue-900">Knockout Stage</h2>
-                <div class="w-16"></div> 
+                <div class="w-16"></div>
+                
             </div>
+            <div id="phase3-instructions" class="bg-indigo-50 border-b border-indigo-100 text-indigo-800 text-center py-2 text-sm font-semibold shadow-inner">
+        👆 Click on a team to advance them to the next round!
 
         <div class="flex-1 overflow-auto bg-slate-50 p-8">
             <div class="flex justify-center min-w-[1800px] relative">
