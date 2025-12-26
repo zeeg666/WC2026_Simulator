@@ -102,7 +102,7 @@ const groupsData = {
   A: ['Mexico', 'South Africa', 'South Korea', 'PLD'],
   B: ['Canada', 'PLA', 'Qatar', 'Switzerland'],
   C: ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
-  D: ['United States', 'Paraguay', 'Australia', 'PLC'],
+  D: ['USA', 'Paraguay', 'Australia', 'PLC'],
   E: ['Germany', 'Curacao', 'Ivory Coast', 'Ecuador'],
   F: ['Netherlands', 'Japan', 'PLB', 'Tunisia'],
   G: ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
@@ -280,70 +280,68 @@ function initializeBracketState(r32Matches) {
 
 // Math logic: Maps matches to next round
 function getNextMatchId(id) {
-    if (id >= 73 && id <= 88) return 89 + Math.floor((id - 73) / 2); // R32->R16
-    if (id >= 89 && id <= 96) return 97 + Math.floor((id - 89) / 2); // R16->QF
-    if (id >= 97 && id <= 100) return 101 + Math.floor((id - 97) / 2); // QF->SF
-    if (id >= 101 && id <= 102) return 104; // SF->Final
-    return null;
+    const bracketMap = {
+        // R32 -> R16
+        74: 89, 77: 89, 73: 90, 75: 90, 
+        83: 93, 84: 93, 81: 94, 82: 94,
+        76: 91, 78: 91, 79: 92, 80: 92,
+        86: 95, 88: 95, 85: 96, 87: 96,
+
+        // R16 -> QF
+        89: 97, 90: 97, 93: 98, 94: 98,
+        91: 99, 92: 99, 95: 100, 96: 100,
+
+        // QF -> SF
+        97: 101, 98: 101, 99: 102, 100: 102,
+
+        // SF -> Final
+        101: 104, 102: 104
+    };
+    return bracketMap[id] || null;
 }
 
 function getNextMatchSlot(id) {
-    return (id % 2 !== 0) ? 'home' : 'away';
+    // These IDs are the first (top) in every pair in your tree map
+    const homeSlots = [74, 73, 83, 81, 76, 79, 86, 85, 89, 93, 91, 95, 97, 99, 101];
+    return homeSlots.includes(id) ? 'home' : 'away';
 }
 
-//
 function renderBracket() {
     const leftContainer = document.getElementById('bracket-left');
     const rightContainer = document.getElementById('bracket-right');
     const finalContainer = document.getElementById('bracket-final');
     
-    // 1. Clear previous content
     leftContainer.innerHTML = '';
     rightContainer.innerHTML = '';
     finalContainer.innerHTML = '';
 
-    // 2. Define Rounds
+    // LEFT COLUMN (Top Quadrant)
     const leftRounds = [
-        { name: "Round of 32", ids: [73, 74, 75, 76, 77, 78, 79, 80] },
-        { name: "Round of 16", ids: [89, 90, 91, 92] },
+        { name: "Round of 32", ids: [74, 77, 73, 75, 83, 84, 81, 82] },
+        { name: "Round of 16", ids: [89, 90, 93, 94] },
         { name: "Quarter Finals", ids: [97, 98] },
         { name: "Semi Finals", ids: [101] }
     ];
 
+    // RIGHT COLUMN (Bottom Quadrant)
     const rightRounds = [
-        { name: "Round of 32", ids: [81, 82, 83, 84, 85, 86, 87, 88] },
-        { name: "Round of 16", ids: [93, 94, 95, 96] },
+        { name: "Round of 32", ids: [76, 78, 79, 80, 86, 88, 85, 87] },
+        { name: "Round of 16", ids: [91, 92, 95, 96] },
         { name: "Quarter Finals", ids: [99, 100] },
         { name: "Semi Finals", ids: [102] }
     ];
 
-    // 3. Render Sides
     renderSide(leftContainer, leftRounds);
     renderSide(rightContainer, rightRounds);
 
-    // 4. Render Final (Lifted slightly above center)
-    // ADDED: 'pb-32' (Padding Bottom). This pushes the "center" point upwards.
-    // You can adjust 'pb-32' to 'pb-20' (lower) or 'pb-40' (higher) to taste.
     finalContainer.className = "flex flex-col items-center self-stretch w-32 z-10 pb-64";
-    
-    // 5. Wrapper
     const finalWrapper = document.createElement('div');
     finalWrapper.className = "my-auto flex flex-col items-center w-full";
-
-    const finalTitle = document.createElement('h3');
-    finalTitle.className = "text-center font-bold text-yellow-600 mb-4 uppercase tracking-widest text-sm";
-    finalTitle.innerText = "FINAL";
-    finalWrapper.appendChild(finalTitle);
-
     finalWrapper.appendChild(createMatchCard(bracketState[104]));
-    
     finalContainer.appendChild(finalWrapper);
 
-    // 6. Draw Lines
-    setTimeout(drawLines, 0);
+    setTimeout(drawLines, 50);
 }
-
-
 //
 function renderSide(container, rounds) {
     rounds.forEach((round) => {
@@ -522,38 +520,27 @@ function closeChampion() { document.getElementById('champion-display').classList
 // 4. LOGIC ENGINE
 // ==========================================
 function calculateKnockoutMatchups(groupResults, bestThirdPlaceGroups) {
-    const matches = {
-        73: { home: groupResults['A'][1], away: groupResults['B'][1] },
-        75: { home: groupResults['F'][0], away: groupResults['C'][1] },
-        76: { home: groupResults['C'][0], away: groupResults['F'][1] },
-        78: { home: groupResults['E'][1], away: groupResults['I'][1] },
-        83: { home: groupResults['K'][1], away: groupResults['L'][1] },
-        84: { home: groupResults['H'][0], away: groupResults['J'][1] },
-        86: { home: groupResults['J'][0], away: groupResults['H'][1] },
-        88: { home: groupResults['D'][1], away: groupResults['G'][1] }
-    };
-
     const comboKey = bestThirdPlaceGroups.join('');
-    let assignment = {};
-    
-    // JSON LOOKUP with Strict Error Checking
-    if (fifaOfficialTable && fifaOfficialTable[comboKey]) {
-        assignment = fifaOfficialTable[comboKey];
-    } else {
-        alert("Error: Combination " + comboKey + " not found in JSON (or JSON not loaded).");
-        return {};
-    }
+    let assignment = fifaOfficialTable[comboKey];
 
-    matches[74] = { home: groupResults['E'][0], away: getTeam(assignment['E'], groupResults) };
-    matches[77] = { home: groupResults['I'][0], away: getTeam(assignment['I'], groupResults) };
-    matches[79] = { home: groupResults['A'][0], away: getTeam(assignment['A'], groupResults) };
-    matches[80] = { home: groupResults['L'][0], away: getTeam(assignment['L'], groupResults) };
-    matches[81] = { home: groupResults['D'][0], away: getTeam(assignment['D'], groupResults) };
-    matches[82] = { home: groupResults['G'][0], away: getTeam(assignment['G'], groupResults) };
-    matches[85] = { home: groupResults['B'][0], away: getTeam(assignment['B'], groupResults) };
-    matches[87] = { home: groupResults['K'][0], away: getTeam(assignment['K'], groupResults) };
-
-    return matches;
+    return {
+        73: { home: groupResults['A'][1], away: groupResults['B'][1] }, // A2 vs B2
+        74: { home: groupResults['E'][0], away: getTeam(assignment['E'], groupResults) }, // E1 vs 3rd
+        75: { home: groupResults['F'][0], away: groupResults['C'][1] }, // F1 vs C2
+        76: { home: groupResults['C'][0], away: groupResults['F'][1] }, // C1 vs F2
+        77: { home: groupResults['I'][0], away: getTeam(assignment['I'], groupResults) }, // I1 vs 3rd
+        78: { home: groupResults['E'][1], away: groupResults['I'][1] }, // E2 vs I2
+        79: { home: groupResults['A'][0], away: getTeam(assignment['A'], groupResults) }, // A1 vs 3rd
+        80: { home: groupResults['L'][0], away: getTeam(assignment['L'], groupResults) }, // L1 vs 3rd
+        81: { home: groupResults['D'][0], away: getTeam(assignment['D'], groupResults) }, // D1 vs 3rd
+        82: { home: groupResults['G'][0], away: getTeam(assignment['G'], groupResults) }, // G1 vs 3rd
+        83: { home: groupResults['K'][1], away: groupResults['L'][1] }, // K2 vs L2
+        84: { home: groupResults['H'][0], away: groupResults['J'][1] }, // H1 vs J2
+        85: { home: groupResults['B'][0], away: getTeam(assignment['B'], groupResults) }, // B1 vs 3rd
+        86: { home: groupResults['J'][0], away: groupResults['H'][1] }, // J1 vs H2
+        87: { home: groupResults['K'][0], away: getTeam(assignment['K'], groupResults) }, // K1 vs 3rd
+        88: { home: groupResults['D'][1], away: groupResults['G'][1] }  // D2 vs G2
+    };
 }
 
 function getTeam(groupLetter, groupResults) {
