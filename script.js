@@ -5,8 +5,8 @@
 
 const fifaCountryCodes = {
   "Mexico": "MEX",
-  "South Africa": "RSA", // I added a space here to be safe
-  "South Korea": "KOR",  // Added space
+  "South Africa": "RSA",
+  "South Korea": "KOR",
   "Canada": "CAN",
   "Qatar": "QAT",
   "Switzerland": "SUI",
@@ -19,7 +19,7 @@ const fifaCountryCodes = {
   "Australia": "AUS",
   "Germany": "GER",
   "Curacao": "CUW",
-  "Ivory Coast": "CIV", // Added space
+  "Ivory Coast": "CIV",
   "Ecuador": "ECU",
   "Netherlands": "NED",
   "Japan": "JPN",
@@ -27,10 +27,10 @@ const fifaCountryCodes = {
   "Belgium": "BEL",
   "Egypt": "EGY",
   "Iran": "IRN",
-  "New Zealand": "NZL", // Added space
+  "New Zealand": "NZL",
   "Spain": "ESP",
-  "Cape Verde": "CPV", // Added space
-  "Saudi Arabia": "KSA", // Added space
+  "Cape Verde": "CPV",
+  "Saudi Arabia": "KSA",
   "Uruguay": "URU",
   "France": "FRA",
   "Senegal": "SEN",
@@ -46,11 +46,13 @@ const fifaCountryCodes = {
   "Croatia": "CRO",
   "Ghana": "GHA",
   "Panama": "PAN",
-  "Denmark": "DEN"
-  // Add any missing ones...
+  "Denmark": "DEN",
+  "Turkey": "TUR",
+  "Bosnia": "BIH",
+  "Czech": "CZE",
+  "Sweden": "SWE"
 };
 
-// Map Team Name -> FlagCDN Code (ISO alpha-2)
 const teamCodes = {
     // --- CONCACAF (North America) ---
     "USA": "us", "Canada": "ca", "Mexico": "mx",
@@ -71,7 +73,9 @@ const teamCodes = {
     "Poland": "pl", "Ukraine": "ua", "Sweden": "se",
     "Turkey": "tr", "Wales": "gb-wls", "Scotland": "gb-sct",
     "Austria": "at", "Hungary": "hu", "Czech Republic": "cz",
+    "Czech": "cz", // Added to match your FIFA list naming
     "Norway": "no",
+    "Bosnia": "ba", // Added
 
     // --- CAF (Africa) ---
     "Morocco": "ma", "Senegal": "sn", "Nigeria": "ng",
@@ -99,12 +103,12 @@ const teamCodes = {
 let teamOriginMap = {};
 
 const groupsData = {
-  A: ['Mexico', 'South Africa', 'South Korea', 'PLD'],
-  B: ['Canada', 'PLA', 'Qatar', 'Switzerland'],
+  A: ['Mexico', 'South Africa', 'South Korea', 'Czech'],
+  B: ['Canada', 'Bosnia', 'Qatar', 'Switzerland'],
   C: ['Brazil', 'Morocco', 'Haiti', 'Scotland'],
-  D: ['USA', 'Paraguay', 'Australia', 'PLC'],
+  D: ['USA', 'Paraguay', 'Australia', 'Turkey'],
   E: ['Germany', 'Curacao', 'Ivory Coast', 'Ecuador'],
-  F: ['Netherlands', 'Japan', 'PLB', 'Tunisia'],
+  F: ['Netherlands', 'Japan', 'Sweden', 'Tunisia'],
   G: ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
   H: ['Spain', 'Cape Verde', 'Saudi Arabia', 'Uruguay'],
   I: ['France', 'Senegal', 'PL2', 'Norway'],
