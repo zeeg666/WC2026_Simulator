@@ -50,7 +50,9 @@ const fifaCountryCodes = {
   "Turkey": "TUR",
   "Bosnia": "BIH",
   "Czech": "CZE",
-  "Sweden": "SWE"
+  "Sweden": "SWE",
+  "Iraq": "IRQ",
+  "DR Congo": "COD"
 };
 
 const teamCodes = {
@@ -73,9 +75,9 @@ const teamCodes = {
     "Poland": "pl", "Ukraine": "ua", "Sweden": "se",
     "Turkey": "tr", "Wales": "gb-wls", "Scotland": "gb-sct",
     "Austria": "at", "Hungary": "hu", "Czech Republic": "cz",
-    "Czech": "cz", // Added to match your FIFA list naming
+    "Czech": "cz", 
     "Norway": "no",
-    "Bosnia": "ba", // Added
+    "Bosnia": "ba",
 
     // --- CAF (Africa) ---
     "Morocco": "ma", "Senegal": "sn", "Nigeria": "ng",
@@ -84,6 +86,7 @@ const teamCodes = {
     "Mali": "ml", "Burkina Faso": "bf",
     "Cape Verde": "cv",
     "South Africa": "za",
+    "DR Congo": "cd",
 
     // --- AFC (Asia) ---
     "Japan": "jp", "South Korea": "kr", "Iran": "ir",
@@ -97,7 +100,7 @@ const teamCodes = {
     "Curacao": "cw",
 
     // --- Fallbacks / Generic ---
-    "TBD": "un", // United Nations flag for unknown
+    "TBD": "un", 
 };
 
 let teamOriginMap = {};
@@ -111,9 +114,9 @@ const groupsData = {
   F: ['Netherlands', 'Japan', 'Sweden', 'Tunisia'],
   G: ['Belgium', 'Egypt', 'Iran', 'New Zealand'],
   H: ['Spain', 'Cape Verde', 'Saudi Arabia', 'Uruguay'],
-  I: ['France', 'Senegal', 'PL2', 'Norway'],
+  I: ['France', 'Senegal', 'Iraq', 'Norway'],
   J: ['Argentina', 'Algeria', 'Austria', 'Jordan'],
-  K: ['Portugal', 'PL1', 'Uzbekistan', 'Colombia'],
+  K: ['Portugal', 'DR Congo', 'Uzbekistan', 'Colombia'],
   L: ['England', 'Croatia', 'Ghana', 'Panama'],
 };
 
